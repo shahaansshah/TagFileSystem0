@@ -7,6 +7,8 @@ void RefreshDirectory(LPTSTR);
 void RefreshTree(LPTSTR);
 void WatchDirectory(LPTSTR);
 
+//change
+
 int _tmain(int argc, TCHAR *argv[])
 {
     if(argc != 2)
