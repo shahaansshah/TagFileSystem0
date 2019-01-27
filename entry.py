@@ -12,12 +12,13 @@ class Entry:
     # If so, it creates one of these Entry objects, with the tag
     # associations being pulled from the other info in that JSON.
 
-    def __init__(self,fullpath):    #inits a file name and path "uniqueID". filepath and entryname are passed in from main or wherever
+    def __init__(self,json_path):    #inits a file name and path "uniqueID". filepath and entryname are passed in from main or wherever
+
+        self.json_path = json_path
+        self.entry_path = readfromJSON(json_path)["Filepath"]
 
         #How about self.ID=[filepath,entryname] ?
-        self.fullpath = fullpath
-        (self.directory, self.name) = os.path.split(fullpath)
-        self.tagsinfo=getTagsfromJSON(fullpath) #pulls the tags info from the JSON file to store in tags
+        self.tagsinfo=getTagsfromJSON(json_path) #pulls the tags info from the JSON file to store in tags
 
     def createNewTag(self,tagval,tagcat): #these need to be input as strings!
         if tagcat in self.tagsinfo:
@@ -25,10 +26,12 @@ class Entry:
         else:
             self.tagsinfo[tagcat] = [tagval]
         newinfo = self.tagsinfo
-        newinfo['Filepath'] = self.fullpath
-        writetoJSON(self.fullpath,newinfo)
+        newinfo['Filepath'] = self.json_path
+        writetoJSON(self.json_path,newinfo)
 
 
+    def get_json_name(self):
+        return os.path.split(self.json_path)[1]
 
 
 
@@ -38,8 +41,8 @@ class Entry:
         #writetoJSON(filepath,entryname,data) #How can I append or add to the file?
 
 
-path = 'C:\\Users\\Shahaan\\Documents\\DeltahacksPR\\jsonfiletemplate.json'
-newEntry = Entry(path)
-print(newEntry.tagsinfo)
-newEntry.createNewTag(str(input('tag value: ')), str(input('tag category: ')))
-print(newEntry.tagsinfo)
+# path = 'C:\\Users\\Shahaan\\Documents\\DeltahacksPR\\jsonfiletemplate.json'
+# newEntry = Entry(path)
+# print(newEntry.tagsinfo)
+# newEntry.createNewTag(str(input('tag value: ')), str(input('tag category: ')))
+# print(newEntry.tagsinfo)
