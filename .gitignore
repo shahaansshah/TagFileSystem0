@@ -2,3 +2,5 @@
 PR_DATA
 
 __pycache__
+
+*.exe
