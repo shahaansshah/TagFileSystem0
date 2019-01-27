@@ -79,10 +79,10 @@ class FileSystem:
                         self.entries.append(curr_entry)
 
             # sort entries my name in ascending numerical order
-            self.entries.sort(key=(lambda x: int(x.name[0:-5])))
+            self.entries.sort(key=(lambda x: int(x.get_json_name()[0:-5])))
 
             # Get the highest numbered JSON file
-            highest = int(self.entries[-1].name[0:-5])
+            highest = int(self.entries[-1].get_json_name()[0:-5])
 
         except FileNotFoundError:
             os.mkdir(json_dir, 0o777)
@@ -93,7 +93,7 @@ class FileSystem:
         for item in all_paths:
             found = False
             for entry in self.entries:
-                if entry.fullpath == item:
+                if entry.entry_path == item:
                     found = True
                     break
             if found:
@@ -101,7 +101,6 @@ class FileSystem:
             # Otherwise, we need to make a JSON for it
             writetoJSON(os.path.join(json_dir, str(highest+1) + ".json"),
                         {"Filepath":item})
-            print("erjngeuir")
             highest += 1
             
 
@@ -162,8 +161,6 @@ class FileSystem:
 def main():
 
     fs = FileSystem("/home/david/Documents/DankerMemes")
-
-    print(fs)
 
     pass
 
