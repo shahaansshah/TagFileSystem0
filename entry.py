@@ -23,8 +23,10 @@ class Entry:
         #Below line --> all wrong!
         #self.tagsinfo = self.tags.append(tagcat:[tagval]) #Create a new entry in tagsinfo - The types going on here are all wrong though
         #writetoJSON(filepath,entryname,data) #How can I append or add to the file?
+        pass
 
-
-path = 'C:\\Users\\Shahaan\\Documents\\DeltahacksPR\\jsonfiletemplate.json'
-newEntry = Entry(path)
-print(newEntry.tagsinfo)
+    def __repr__(self):
+        return (self.name + " in " + self.directory)
+# path = 'C:\\Users\\Shahaan\\Documents\\DeltahacksPR\\jsonfiletemplate.json'
+# newEntry = Entry(path)
+# print(newEntry.tagsinfo)

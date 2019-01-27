@@ -46,7 +46,7 @@ def getTagsfromJSON(filepath):  #returns the dictionary from the JSON file witho
 #data['val'] = 'Bouncy'
 #writetoJSON(path, fileName, data)  # calling the function and passing the now-defined parameters path, fileName&data
 
-path = 'C:\\Users\\Shahaan\\Documents\\DeltahacksPR\\jsonfiletemplate.json'
+# path = 'C:\\Users\\Shahaan\\Documents\\DeltahacksPR\\jsonfiletemplate.json'
 
-print(readfromJSON(path))
-print(getTagsfromJSON(path))
+# print(readfromJSON(path))
+# print(getTagsfromJSON(path))
