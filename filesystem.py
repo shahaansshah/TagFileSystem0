@@ -1,5 +1,6 @@
 
 import os
+from JSONlib import *
 
 JSON_DATA_FOLDER = "PR_DATA"
 
@@ -52,32 +53,39 @@ class FileSystem:
         # get the folder with the JSON files in it
         json_dir = os.path.join(current_dir, JSON_DATA_FOLDER)
 
-        # Get the members of the folder
-        members_json_folder = os.listdir(path=json_dir)
+        highest = -1
 
-        # for each of the members
-        for item in members_json_folder:
+        try:
 
-            # contruct the abs path name
-            file_abs_path = os.path.join(json_dir, item)
+            # Get the members of the folder
+            members_json_folder = os.listdir(path=json_dir)
 
-            # Make sure it is a JSON file
-            if os.path.isfile(file_abs_path) and item.endswith(".json"):
+            # for each of the members
+            for item in members_json_folder:
 
-                curr_entry = Entry(file_abs_path)
+                # contruct the abs path name
+                file_abs_path = os.path.join(json_dir, item)
 
-                if curr_entry == None:
-                    # If the entry is not there, remove the JSON
-                    os.remove(file_abs_path)
-                else:
-                    # Add it to the entries list
-                    self.entries.append(curr_entry)
+                # Make sure it is a JSON file
+                if os.path.isfile(file_abs_path) and item.endswith(".json"):
 
-        # sort entries my name in ascending numerical order
-        self.entries.sort(key=(lambda x: int(x.name[0:-5])))
+                    curr_entry = Entry(file_abs_path)
 
-        # Get the highest numbered JSON file
-        highest = int(self.entries[-1].name[0:-5])
+                    if curr_entry == None:
+                        # If the entry is not there, remove the JSON
+                        os.remove(file_abs_path)
+                    else:
+                        # Add it to the entries list
+                        self.entries.append(curr_entry)
+
+            # sort entries my name in ascending numerical order
+            self.entries.sort(key=(lambda x: int(x.name[0:-5])))
+
+            # Get the highest numbered JSON file
+            highest = int(self.entries[-1].name[0:-5])
+
+        except FileNotFoundError:
+            os.mkdir(json_dir, 0o777)
 
         # Create and add any missing JSON files
         all_paths = get_all_file_paths(directory)
@@ -85,13 +93,16 @@ class FileSystem:
         for item in all_paths:
             found = False
             for entry in self.entries:
-                if entry.filepath == item:
+                if entry.fullpath == item:
                     found = True
                     break
             if found:
                 continue
             # Otherwise, we need to make a JSON for it
-
+            writetoJSON(os.path.join(json_dir, str(highest+1) + ".json"),
+                        {"Filepath":item})
+            print("erjngeuir")
+            highest += 1
             
 
 
@@ -150,14 +161,9 @@ class FileSystem:
 
 def main():
 
-    all_paths = get_all_file_paths("C:\\Users\\david\\Documents\\Danker Memes")
+    fs = FileSystem("/home/david/Documents/DankerMemes")
 
-    for path in all_paths:
-        print(path)
-
-    #fs = FileSystem("C:\\Users\\david\\Documents\\Programming\\DeltaHacksV\\TagFileSystem0")
-
-    #print(fs)
+    print(fs)
 
     pass
 
