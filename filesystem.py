@@ -2,6 +2,9 @@
 import os
 from JSONlib import *
 
+# TODO: remove (just for a demo)
+from random import shuffle
+
 JSON_DATA_FOLDER = "PR_DATA"
 
 from entry import Entry
@@ -99,6 +102,7 @@ class FileSystem:
             if found:
                 continue
             # Otherwise, we need to make a JSON for it
+            print("Writing...")
             writetoJSON(os.path.join(json_dir, str(highest+1) + ".json"),
                         {"Filepath":item})
             highest += 1
@@ -157,9 +161,10 @@ class FileSystem:
         return string_rep
 
 # Unit testing
-
 if __name__ == ("__main__"):
 
     fs = FileSystem("/home/david/Documents/DankerMemes")
+
+    shuffle(fs.entries)
 
     fs.entries[0].open_entry()
