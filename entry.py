@@ -19,7 +19,20 @@ class Entry:
         (self.directory, self.name) = os.path.split(fullpath)
         self.tagsinfo=getTagsfromJSON(fullpath) #pulls the tags info from the JSON file to store in tags
 
-    def createNewTag(self,tagval,tagcat):
+    def createNewTag(self,tagval,tagcat): #these need to be input as strings!
+        if tagcat in self.tagsinfo:
+            self.tagsinfo[tagcat].append(tagval)
+        else:
+            self.tagsinfo[tagcat] = [tagval]
+        newinfo = self.tagsinfo
+        newinfo['Filepath'] = self.fullpath
+        writetoJSON(self.fullpath,newinfo)
+
+
+
+
+
+
         #Below line --> all wrong!
         #self.tagsinfo = self.tags.append(tagcat:[tagval]) #Create a new entry in tagsinfo - The types going on here are all wrong though
         #writetoJSON(filepath,entryname,data) #How can I append or add to the file?
@@ -27,4 +40,6 @@ class Entry:
 
 path = 'C:\\Users\\Shahaan\\Documents\\DeltahacksPR\\jsonfiletemplate.json'
 newEntry = Entry(path)
+print(newEntry.tagsinfo)
+newEntry.createNewTag(str(input('tag value: ')), str(input('tag category: ')))
 print(newEntry.tagsinfo)
