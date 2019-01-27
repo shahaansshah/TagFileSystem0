@@ -8,8 +8,7 @@ class Query:
         self.name = name
         self.tags = tags
 
-    # Given a particular file object, checks if the file
-    #  matches the query
+    # Given a particular Entry, checks if the entry matches the query
     def check_matching(self, file):
 
         # TODO:

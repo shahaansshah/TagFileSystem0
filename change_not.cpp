@@ -7,6 +7,9 @@ void RefreshDirectory(LPTSTR);
 void RefreshTree(LPTSTR);
 void WatchDirectory(LPTSTR);
 
+// WE GOT THIS CODE FROM:
+//   
+
 //change
 
 int _tmain(int argc, TCHAR *argv[])
@@ -18,8 +21,8 @@ int _tmain(int argc, TCHAR *argv[])
     }
 
     WatchDirectory(argv[1]);
-	
-	return 0;
+   
+   return 0;
 }
 
 void WatchDirectory(LPTSTR lpDir)
