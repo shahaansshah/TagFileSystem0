@@ -7,6 +7,9 @@ void RefreshDirectory(LPTSTR);
 void RefreshTree(LPTSTR);
 void WatchDirectory(LPTSTR);
 
+// WE GOT THIS CODE FROM:
+// https://docs.microsoft.com/en-us/windows/desktop/FileIO/obtaining-directory-change-notifications
+
 //change
 
 int _tmain(int argc, TCHAR *argv[])
@@ -18,8 +21,12 @@ int _tmain(int argc, TCHAR *argv[])
     }
 
     WatchDirectory(argv[1]);
-	
-	return 0;
+   
+   return 0;
+}
+
+void throwawayfn(DWORD dwErrorCode, DWORD dwNumberOfBytesTransfered, LPOVERLAPPED lpOverlapped){
+   return;
 }
 
 void WatchDirectory(LPTSTR lpDir)
@@ -30,7 +37,7 @@ void WatchDirectory(LPTSTR lpDir)
    TCHAR lpFile[_MAX_FNAME];
    TCHAR lpExt[_MAX_EXT];
 
-   // I CHANGED THIS
+   // I CHANGED THIS (so that it would compile)
    _tsplitpath(lpDir, lpDrive, NULL, lpFile, lpExt);
 
    lpDrive[2] = (TCHAR)'\\';
@@ -90,6 +97,47 @@ void WatchDirectory(LPTSTR lpDir)
          // A file was created, renamed, or deleted in the directory.
          // Refresh this directory and restart the notification.
  
+         // figure out what changed, knowing that it was in dwChangeHandle[0]
+         FILE_NOTIFY_INFORMATION notification;
+         DWORD num_bytes;
+         
+         // TODO: poor form
+         if(!ReadDirectoryChangesW(dwChangeHandles[0],
+            &notification,
+            sizeof(_FILE_NOTIFY_INFORMATION),
+            FALSE,
+            FILE_NOTIFY_CHANGE_FILE_NAME,
+            &num_bytes,
+            NULL,
+            throwawayfn)){
+
+            printf("Things went wrong");
+            exit(1);
+
+         }
+
+         // Print out what happened         
+         switch(notification.Action) {
+            case 0x00000001:
+               printf("file added");
+               break;
+            case 0x00000002:
+               printf("file removed");
+               break;
+            case 0x00000003:
+               printf("file modified");
+               break;
+            case 0x00000004:
+               printf("renamed this is old");
+               break;
+            case 0x00000005:
+               printf("rename this is new");
+               break;
+            default:
+               printf("???");
+         }
+         
+
              RefreshDirectory(lpDir); 
              if ( FindNextChangeNotification(dwChangeHandles[0]) == FALSE )
              {
