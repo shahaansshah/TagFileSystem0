@@ -3,7 +3,6 @@ import os
 
 JSON_DATA_FOLDER = "PR_DATA"
 
-# TODO: import the Entry module
 from entry import Entry
 
 # Represents a bunch of tagged files
@@ -34,10 +33,10 @@ class FileSystem:
         for item in members_json_folder:
 
             # contruct the abs path name
-            file_abs_path = os.path.join(members_json_folder, item)
+            file_abs_path = os.path.join(json_dir, item)
 
             # Make sure it is a JSON file
-            if os.path.isfile(file_abs_path) and item[-5:-1] == ".json":
+            if os.path.isfile(file_abs_path) and item.endswith(".json"):
 
                 curr_entry = Entry(file_abs_path)
 
@@ -49,7 +48,7 @@ class FileSystem:
                     self.entries.append(curr_entry)
 
         # Create and add any missing files
-        for item in 
+        #for item in 
 
 
         # Check if the filestructure matches the 
@@ -71,7 +70,7 @@ class FileSystem:
         pass
 
 
-    # Given a file change, solve the file chagne in the metadata about the files
+    # Given a file change, solve the file changed in the metadata about the files
     #  Used when the program is running
     def resolve_delta(self, delta):
 
@@ -86,7 +85,7 @@ class FileSystem:
 
         matching = []
 
-        for file in self.files:
+        for file in self.entries:
 
             if query.check_matches(file):
 
@@ -94,11 +93,22 @@ class FileSystem:
 
         return matching
 
+    def __repr__(self):
+        
+        string_rep = ""
+
+        for entry in self.entries:
+            string_rep += str(entry) + "\n"
+
+        return string_rep
+
 # Unit testing
 
 def main():
 
-    FileSystem()
+    fs = FileSystem("C:\\Users\\david\\Documents\\Programming\\DeltaHacksV\\TagFileSystem0")
+
+    print(fs)
 
     pass
 
