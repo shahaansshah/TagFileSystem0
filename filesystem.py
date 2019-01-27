@@ -158,12 +158,8 @@ class FileSystem:
 
 # Unit testing
 
-def main():
+if __name__ == ("__main__"):
 
     fs = FileSystem("/home/david/Documents/DankerMemes")
 
-    pass
-
-
-# TODO: comment out
-main()
+    fs.entries[0].open_entry()

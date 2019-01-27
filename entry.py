@@ -1,4 +1,6 @@
 import os
+import sys
+import subprocess
 from JSONlib import *
 
 class Entry:
@@ -33,7 +35,16 @@ class Entry:
     def get_json_name(self):
         return os.path.split(self.json_path)[1]
 
-
+    # Opens the file for viewing
+    def open_entry(self):
+        if sys.platform.startswith("win32"):
+            os.startfile(self.entry_path)
+        elif sys.platform.startswith("darwin"):
+            subprocess.call(("open", self.entry_path))
+        elif sys.platform.startswith("linux"):
+            subprocess.call(("xdg-open", self.entry_path))
+        else:
+            raise NotImplementedError("Not properly implemented for " + sys.platform)
 
 
         #Below line --> all wrong!
