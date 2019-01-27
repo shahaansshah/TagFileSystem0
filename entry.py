@@ -35,6 +35,9 @@ class Entry:
     def get_json_name(self):
         return os.path.split(self.json_path)[1]
 
+    def get_entry_name(self):
+        return os.path.split(self.entry_path)[1]
+
     # Opens the file for viewing
     def open_entry(self):
         if sys.platform.startswith("win32"):
@@ -46,6 +49,8 @@ class Entry:
         else:
             raise NotImplementedError("Not properly implemented for " + sys.platform)
 
+    def __repr__(self):
+        return self.get_entry_name()
 
         #Below line --> all wrong!
         #self.tagsinfo = self.tags.append(tagcat:[tagval]) #Create a new entry in tagsinfo - The types going on here are all wrong though
