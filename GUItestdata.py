@@ -1,0 +1,2 @@
+filtvals = ['Tag1', 'Tag2', 'Tag3', 'Tag4', 'Tag5', 'Tag6', 'Tag7', 'Tag8', 'Tag9', 'Tag10', 'Tag11', 'Tag12']
+# filtvals = {"Cat1": ["val1", "val2", "val3"], "Cat2": ["val4", "val5", "val6"], "Cat3": ["val7"], "Filepath": "C:\\Users\\Shahaan\\Documents\\DeltahacksPR\\jsonfiletemplate.json"}
