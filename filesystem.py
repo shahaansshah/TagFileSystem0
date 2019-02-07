@@ -2,9 +2,13 @@
 import os
 from JSONlib import *
 
+# TODO: remove (just for a demo)
+from random import shuffle
+
 JSON_DATA_FOLDER = "PR_DATA"
 
 from entry import Entry
+from query import Query
 
 # NOTE: the JSON files are all named numbers because its easier
 
@@ -43,10 +47,7 @@ class FileSystem:
 
         self.directory = directory
 
-        # TODO:
-
-        # Check for existing group of tags for files
-        
+        # Store all the JSON files in a subfolder of where the script lies
         # https://stackoverflow.com/questions/3718657/how-to-properly-determine-current-script-directory
         current_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -79,12 +80,13 @@ class FileSystem:
                         self.entries.append(curr_entry)
 
             # sort entries my name in ascending numerical order
-            self.entries.sort(key=(lambda x: int(x.name[0:-5])))
+            self.entries.sort(key=(lambda x: int(x.get_json_name()[0:-5])))
 
             # Get the highest numbered JSON file
-            highest = int(self.entries[-1].name[0:-5])
+            highest = int(self.entries[-1].get_json_name()[0:-5])
 
         except FileNotFoundError:
+            # Make the file if it is not found
             os.mkdir(json_dir, 0o777)
 
         # Create and add any missing JSON files
@@ -93,21 +95,18 @@ class FileSystem:
         for item in all_paths:
             found = False
             for entry in self.entries:
-                if entry.fullpath == item:
+                if entry.entry_path == item:
                     found = True
                     break
             if found:
                 continue
             # Otherwise, we need to make a JSON for it
+            print("Writing...")
             writetoJSON(os.path.join(json_dir, str(highest+1) + ".json"),
                         {"Filepath":item})
-            print("erjngeuir")
             highest += 1
-            
 
 
-        # Check if the filestructure matches the 
-        # current
 
     # Used when the program is starting up in order to create new
     #  metadata files for all contained files
@@ -122,32 +121,22 @@ class FileSystem:
             if os.path.isfile(item):
                 self.entries.append(Entry(item))
 
-        pass
 
 
     # Given a file change, solve the file changed in the metadata about the files
     #  Used when the program is running
+    # the python module watchdog is to be used for generating these changes
     def resolve_delta(self, delta):
-
         # TODO:
-
-        pass
+        raise NotImplementedError("Watchdog functionality not yet added")
 
     # Get a subset of the files using a query
     def query_files(self, query):
 
-        # TODO:
+        # Using the query object to get the matching entries
+        return query.get_entries(self.entries)
 
-        matching = []
-
-        for file in self.entries:
-
-            if query.check_matches(file):
-
-                matching.append(file)
-
-        return matching
-
+    # Decent bug testing string entry
     def __repr__(self):
         
         string_rep = ""
@@ -158,15 +147,17 @@ class FileSystem:
         return string_rep
 
 # Unit testing
-
-def main():
+if __name__ == ("__main__"):
 
     fs = FileSystem("/home/david/Documents/DankerMemes")
 
-    print(fs)
+    query_tags = {}
+    query_tags["format"] = ["to_be_continued"]
+    query_tags["style"] = "classy"
 
-    pass
+    print(fs.query_files(Query("",query_tags)))
 
+    #shuffle(fs.entries)
 
-# TODO: comment out
-main()
+    #fs.entries[0].open_entry()
+
